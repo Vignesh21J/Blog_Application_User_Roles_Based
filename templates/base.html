@@ -31,7 +31,7 @@
         <div class="overflow-auto py-1 mb-2">
             <nav class="nav d-flex justify-content-between">
                 {% for categ in categories %}
-                    <a class="p-2 text-muted" href="#">{{ categ.category_name }}</a>
+                    <a class="p-2 text-muted" href="{% url 'posts_by_category' categ.id %}">{{ categ.category_name }}</a>
                 {% endfor %}
             </nav>
         </div>
