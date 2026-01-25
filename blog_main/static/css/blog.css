@@ -61,3 +61,12 @@ h1, h2, h3, h4, h5, h6 {
 .blog-footer p:last-child {
   margin-bottom: 0;
 }
+
+
+
+/* Hero */
+.hero {
+  background-image: var(--bg-image);
+  background-size: cover;
+  background-blend-mode: overlay;
+}
