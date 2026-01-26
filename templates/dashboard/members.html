@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+
+        {% include 'dashboard/sidebar.html' %}
+
+        <div class="col-md-9">
+            {% if perms.auth.view_user %}
+                <h2>All Users</h2>
+                <a href="{% url 'add_member' %}" class="btn btn-dark text-light float-end mb-2">Add New User</a>
+
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Full Name</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Active</th>
+                            <th>Staff</th>
+                            <th>Superuser</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for user in users %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ user.first_name }} {{ user.last_name }}</td>
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{% if user.is_active %}<i class="fa fa-check d-flex justify-content-center text-success"></i>{% else %}<i class="fa fa-times d-flex justify-content-center text-danger"></i>{% endif %}</td>
+                            <td>{% if user.is_staff %}<i class="fa fa-check d-flex justify-content-center text-success"></i>{% else %}<i class="fa fa-times d-flex justify-content-center text-danger"></i>{% endif %}</td>
+                            <td>{% if user.is_superuser %}<i class="fa fa-check d-flex justify-content-center text-success"></i>{% else %}<i class="fa fa-times d-flex justify-content-center text-danger"></i>{% endif %}</td>
+                            <td>
+                                <a href="{% url 'edit_member' user.id %}"><i class="fa fa-edit text-success"></i></a>
+                                &nbsp;
+                                <a href="{% url 'delete_member' user.id %}"><i class="fa fa-trash text-danger"></i></a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    
+                    </tbody>
+                </table>
+            {% else %}
+                <h5 class="d-flex mt-2 justify-content-center">You do not have permission to view this page</h5>
+            {% endif %}
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
