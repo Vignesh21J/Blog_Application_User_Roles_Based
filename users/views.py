@@ -7,6 +7,8 @@ from django.contrib import auth
 from django.views.decorators.http import require_POST
 from django.contrib import messages
 
+from django.contrib.auth.decorators import login_required
+
 # Create your views here.
 def register(request):
 
@@ -32,7 +34,7 @@ def login(request):
         if form.is_valid():
             user = form.get_user()
             auth.login(request, user)
-            return redirect('/')
+            return redirect('dashboard')
         
         messages.error(
             request,
@@ -48,6 +50,7 @@ def login(request):
 
 
 @require_POST
+@login_required(login_url='login')
 def logout(request):
     auth.logout(request)
     return redirect('login')
