@@ -5,6 +5,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import auth
 
 from django.views.decorators.http import require_POST
+from django.contrib import messages
 
 # Create your views here.
 def register(request):
@@ -28,22 +29,18 @@ def login(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, request.POST)
 
-        # if form.is_valid():
-        #     username = form.cleaned_data['username']
-        #     password = form.cleaned_data['password']
-
-        #     user = auth.authenticate(username=username, password=password)
-        #     if user is not None:
-        #         auth.login(request, user)
-        #     return redirect('/')
-
         if form.is_valid():
             user = form.get_user()
             auth.login(request, user)
             return redirect('/')
         
-    else:
-        form = AuthenticationForm()
+        messages.error(
+            request,
+            "Invalid username or password. Please try again."
+        )
+        return redirect('login')
+        
+    form = AuthenticationForm()
     context = {
         'form': form,
     }
