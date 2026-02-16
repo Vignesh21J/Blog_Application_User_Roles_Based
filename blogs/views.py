@@ -1,7 +1,9 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Blog, Category, Comment
 
+from django.contrib import messages
 from django.db.models import Q
+
 from django.http import HttpResponseRedirect
 
 # Create your views here.
@@ -46,11 +48,25 @@ def blogs(request, blog_slug):
 def search(request):
     keyword = request.GET.get('keyword')
 
-    blogs = Blog.objects.filter(Q(title__icontains=keyword) | Q(short_description__icontains=keyword) | Q(blog_body__icontains=keyword), status='Published')
+    blogs = Blog.objects.none()
+
+    if keyword:
+        blogs = Blog.objects.filter(
+            Q(title__icontains=keyword) |
+            Q(short_description__icontains=keyword) |
+            Q(blog_body__icontains=keyword),
+            status='Published'
+        )
+
+        if not blogs.exists():
+            messages.warning(request, f'No results found for "{keyword}"')
+
+    else:
+        messages.error(request, "Please enter a search keyword.")
 
     context = {
-        'blogs':blogs,
-        'keyword':keyword
+        'blogs': blogs,
+        'keyword': keyword
     }
 
     return render(request, 'search.html', context)

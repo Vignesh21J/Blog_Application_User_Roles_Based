@@ -29,9 +29,9 @@ urlpatterns = [
     path('', views.home, name='home'),
 
     path('category/', include('blogs.urls')),
-    path('blogs/<slug:blog_slug>/', BlogsView.blogs, name='blogs'),
 
     path('blogs/search/', BlogsView.search, name='search'),
+    path('blogs/<slug:blog_slug>/', BlogsView.blogs, name='blogs'),
 
     path('account/', include('users.urls')),
 

@@ -9,13 +9,19 @@ from django.contrib import messages
 
 from django.contrib.auth.decorators import login_required
 
+from .forms import CustomAuthenticationForm
+
 # Create your views here.
 def register(request):
 
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save(commit=False)
+            user.is_active = False  # Disable user by default
+            user.save()
+
+            messages.success(request, "Your account has been created. Please wait for admin approval.")
             return redirect('login')
         
     else:
@@ -29,24 +35,18 @@ def register(request):
 
 def login(request):
     if request.method == 'POST':
-        form = AuthenticationForm(request, request.POST)
+        form = CustomAuthenticationForm(request, data=request.POST)
 
         if form.is_valid():
             user = form.get_user()
             auth.login(request, user)
             return redirect('dashboard')
-        
-        messages.error(
-            request,
-            "Invalid username or password. Please try again."
-        )
-        return redirect('login')
-        
-    form = AuthenticationForm()
-    context = {
-        'form': form,
-    }
-    return render(request, 'login.html', context)
+
+        return render(request, 'login.html', {'form': form})
+
+    form = CustomAuthenticationForm()
+    return render(request, 'login.html', {'form': form})
+
 
 
 @require_POST

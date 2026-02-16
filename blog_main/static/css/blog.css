@@ -52,21 +52,33 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Footer */
 .blog-footer {
-  padding: 2.5rem 0;
+  padding: 1.5rem 0;
+  font-size: 0.9rem;
   color: #727272;
   text-align: center;
   background-color: #f9f9f9;
   border-top: .05rem solid #e5e5e5;
 }
+.blog-footer a {
+  text-decoration: none;
+}
+.blog-footer a:hover {
+  text-decoration: underline;
+}
+
 .blog-footer p:last-child {
   margin-bottom: 0;
 }
 
 
 
-/* Hero */
 .hero {
   background-image: var(--bg-image);
   background-size: cover;
+  background-position: center;
+  background-color: #212529;
   background-blend-mode: overlay;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
 }
